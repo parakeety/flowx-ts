@@ -15,8 +15,7 @@ export class Route<CInput extends Coin, COutput extends Coin> {
 
   constructor(network: NETWORK, paths: Swap<CInput, COutput, any>[]) {
     invariant(
-      paths.length > 0 &&
-        !paths[0].input.equals(paths[paths.length - 1].output),
+      paths.length > 0,
       'PATHS'
     );
 
@@ -35,9 +34,8 @@ export class Route<CInput extends Coin, COutput extends Coin> {
   ) {
     const firstPath = this.paths[0];
     const routeObject = tx.moveCall({
-      target: `${
-        CONFIGS[this.network].packageId
-      }::${MODULE_UNIVERSAL_ROUTER}::start_routing`,
+      target: `${CONFIGS[this.network].packageId
+        }::${MODULE_UNIVERSAL_ROUTER}::start_routing`,
       typeArguments: [
         this.input.coinType,
         this.output.coinType,
@@ -53,9 +51,8 @@ export class Route<CInput extends Coin, COutput extends Coin> {
       const nextPath = this.paths[index + 1];
       if (nextPath) {
         tx.moveCall({
-          target: `${
-            CONFIGS[this.network].packageId
-          }::${MODULE_UNIVERSAL_ROUTER}::next`,
+          target: `${CONFIGS[this.network].packageId
+            }::${MODULE_UNIVERSAL_ROUTER}::next`,
           typeArguments: [
             path.input.coinType,
             path.output.coinType,
@@ -68,9 +65,8 @@ export class Route<CInput extends Coin, COutput extends Coin> {
 
     const lastPath = this.paths[this.paths.length - 1];
     return tx.moveCall({
-      target: `${
-        CONFIGS[this.network].packageId
-      }::${MODULE_UNIVERSAL_ROUTER}::finish_routing`,
+      target: `${CONFIGS[this.network].packageId
+        }::${MODULE_UNIVERSAL_ROUTER}::finish_routing`,
       typeArguments: [
         this.input.coinType,
         this.output.coinType,
